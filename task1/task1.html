@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic News Feed</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 8px; }
+        button { padding: 10px; cursor: pointer; }
+        .articles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .article { border: 1px solid #ccc; padding: 10px; }
+        .article img { width: 100%; height: auto; }
+        .pagination { display: flex; justify-content: center; margin-top: 20px; gap: 5px; }
+        .pagination button { padding: 5px 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>News Feed</h1>
+        <h2>Add News Article</h2>
+        <form id="articleForm">
+            <input type="text" id="title" placeholder="Title" required>
+            <textarea id="description" placeholder="Description" required></textarea>
+            <input type="text" id="imageUrl" placeholder="Image URL (optional)">
+            <button type="submit">Add Article</button>
+        </form>
+        
+        <h2>News Feed</h2>
+        <div id="newsFeed" class="articles"></div>
+        
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <script>
+        let articles = [];
+        const articlesPerPage = 4;
+        let currentPage = 1;
+
+        document.getElementById('articleForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const imageUrl = document.getElementById('imageUrl').value;
+
+            if (title && description) {
+                articles.push({ title, description, imageUrl });
+                document.getElementById('articleForm').reset();
+                renderArticles();
+            }
+        });
+
+        function renderArticles() {
+            const newsFeed = document.getElementById('newsFeed');
+            const pagination = document.getElementById('pagination');
+            newsFeed.innerHTML = '';
+            pagination.innerHTML = '';
+
+            const startIndex = (currentPage - 1) * articlesPerPage;
+            const paginatedArticles = articles.slice(startIndex, startIndex + articlesPerPage);
+
+            paginatedArticles.forEach(article => {
+                const articleElement = document.createElement('div');
+                articleElement.classList.add('article');
+                articleElement.innerHTML = `<h3>${article.title}</h3><p>${article.description}</p>` +
+                    (article.imageUrl ? `<img src="${article.imageUrl}" alt="Article Image">` : '');
+                newsFeed.appendChild(articleElement);
+            });
+
+            const totalPages = Math.ceil(articles.length / articlesPerPage);
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.innerText = i;
+                pageButton.onclick = () => { currentPage = i; renderArticles(); };
+                pagination.appendChild(pageButton);
+            }
+        }
+    </script>
+</body>
+</html>
