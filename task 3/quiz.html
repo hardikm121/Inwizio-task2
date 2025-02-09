@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz App</title>
+  <link rel="stylesheet" type="text/css" href="quiz.css">
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Quiz App</h1>
+    <div id="rules-container">
+      <h2>Quiz Rules</h2>
+      <ul>
+        <li>Each question has four options, only one is correct.</li>
+        <li>You have <b>10 seconds</b> to answer each question.</li>
+        <li>Each correct answer awards 1 point.</li>
+        <li>Quiz will end if time runs out.</li>
+      </ul>
+      <button id="start-quiz-button">Start Quiz</button>
+    </div>
+    <div id="question-container" style="display: none;">
+      <p id="question-text"></p>
+      <div id="answer-buttons"></div>
+      <p id="timer-text">Time Left: <span id="timer">10</span></p>
+    </div>
+  </div>
+  <script src="quiz.js"></script>
+</body>
+</html>
